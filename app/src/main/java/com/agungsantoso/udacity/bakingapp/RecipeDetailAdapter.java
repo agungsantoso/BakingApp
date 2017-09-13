@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.agungsantoso.udacity.bakingapp.data.IngredientsParcel;
+import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
 import com.agungsantoso.udacity.bakingapp.dummy.DummyContent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,9 +24,9 @@ import java.util.List;
 public class RecipeDetailAdapter
         extends RecyclerView.Adapter<RecipeDetailAdapter.ViewHolder> {
 
-    private final List<DummyContent.DummyItem> mValues;
+    private final ArrayList<StepsParcel> mValues;
 
-    public RecipeDetailAdapter(List<DummyContent.DummyItem> items) {
+    public RecipeDetailAdapter(ArrayList<StepsParcel> items) {
         mValues = items;
     }
 
@@ -34,10 +38,10 @@ public class RecipeDetailAdapter
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getId());
+        holder.mContentView.setText(mValues.get(position).getShortDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,11 +55,12 @@ public class RecipeDetailAdapter
                             .replace(R.id.item_detail_container, fragment)
                             .commit();
                 } else {*/
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, RecipeStepDetailActivity.class);
-                    intent.putExtra(RecipeStepDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-
-                    context.startActivity(intent);
+                Context context = v.getContext();
+                Intent intent = new Intent(context, RecipeStepDetailActivity.class);
+                intent.putExtra("thumbnail", mValues.get(position).getThumbnailURL());
+                intent.putExtra("video", mValues.get(position).getVideoURL());
+                intent.putExtra("description", mValues.get(position).getDescription());
+                context.startActivity(intent);
                 //}
             }
         });
@@ -70,7 +75,7 @@ public class RecipeDetailAdapter
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyContent.DummyItem mItem;
+        public StepsParcel mItem;
 
         public ViewHolder(View view) {
             super(view);

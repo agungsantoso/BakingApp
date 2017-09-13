@@ -35,9 +35,32 @@ public class Recipe {
         return ingredients;
     }
 
-    public void setItems(List<Ingredients
-            > ingredients) {
+    public void setIngredients(List<Ingredients> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public List<Steps> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Steps> steps) {
+        this.steps = steps;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public static class Ingredients {
@@ -71,18 +94,18 @@ public class Recipe {
     }
 
     public static class Steps {
-        private int id;
+        private String id;
         private String shortDescription;
         private String description;
         private String videoURL;
         private String thumbnailURL;
 
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

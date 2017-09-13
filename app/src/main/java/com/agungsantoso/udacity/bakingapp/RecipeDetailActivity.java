@@ -1,13 +1,20 @@
 package com.agungsantoso.udacity.bakingapp;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
+import android.widget.TextView;
 
 
+import com.agungsantoso.udacity.bakingapp.data.IngredientsParcel;
+import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
 import com.agungsantoso.udacity.bakingapp.dummy.DummyContent;
+
+import java.util.ArrayList;
 
 /**
  * An activity representing a list of Items. This activity
@@ -45,6 +52,20 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new RecipeDetailAdapter(DummyContent.ITEMS));
+        Bundle data = getIntent().getExtras();
+        ArrayList<IngredientsParcel> ingrParcel = data.getParcelableArrayList("ingredients");
+        String ingrText = "";
+        for(int i = 0; i < ingrParcel.size(); i++) {
+            ingrText += ingrParcel.get(i).getIngredients() + " " +
+                        ingrParcel.get(i).getQuantity() + " " +
+                        ingrParcel.get(i).getMeasure() + " " +
+                        "\n";
+        }
+
+        TextView ingrTextView = (TextView) findViewById(R.id.ingredients);
+        ingrTextView.setText(ingrText);
+
+        ArrayList<StepsParcel> stpsParcel = data.getParcelableArrayList("steps");
+        recyclerView.setAdapter(new RecipeDetailAdapter(stpsParcel));
     }
 }

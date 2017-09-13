@@ -3,13 +3,18 @@ package com.agungsantoso.udacity.bakingapp;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.agungsantoso.udacity.bakingapp.data.IngredientsParcel;
 import com.agungsantoso.udacity.bakingapp.data.Recipe;
+import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,10 +54,32 @@ public class RecipeAdapter
                             .replace(R.id.item_detail_container, fragment)
                             .commit();
                 } else {*/
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, RecipeDetailActivity.class);
-                    intent.putExtra(RecipeStepDetailFragment.ARG_ITEM_ID, "");
-                    context.startActivity(intent);
+                Log.d("RecipeAdapter", "data = " + holder.mItem.getIngredients().toString());
+                Context context = v.getContext();
+                Intent intent = new Intent(context, RecipeDetailActivity.class);
+                List<Recipe.Ingredients> ingr = holder.mItem.getIngredients();
+                ArrayList<IngredientsParcel> ingrParcel = new ArrayList<>();
+                for(int i = 0; i < ingr.size(); i++) {
+                    ingrParcel.add(new IngredientsParcel(
+                            ingr.get(i).getQuantity(),
+                            ingr.get(i).getMeasure(),
+                            ingr.get(i).getIngredient()
+                    ));
+                }
+                intent.putParcelableArrayListExtra("ingredients", ingrParcel);
+                List<Recipe.Steps> stps = holder.mItem.getSteps();
+                ArrayList<StepsParcel> stpsParcel = new ArrayList<>();
+                for(int i = 0; i < stps.size(); i++) {
+                    stpsParcel.add(new StepsParcel(
+                            stps.get(i).getId(),
+                            stps.get(i).getShortDescription(),
+                            stps.get(i).getDescription(),
+                            stps.get(i).getVideoURL(),
+                            stps.get(i).getThumbnailURL()
+                    ));
+                }
+                intent.putParcelableArrayListExtra("steps", stpsParcel);
+                context.startActivity(intent);
                 //}
             }
         });
