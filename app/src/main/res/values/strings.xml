@@ -3,6 +3,8 @@
     <string name="select_receipe_title">Baking App (Select A Receipe)</string>
     <string name="receipe_detail_title">Baking App (Receipe Detail)</string>
     <string name="receipe_step_detail_title">Baking App (Receipe Step Detail)</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="title_activity_recipe">RecipeActivity</string>
     <string name="action_settings">Settings</string>

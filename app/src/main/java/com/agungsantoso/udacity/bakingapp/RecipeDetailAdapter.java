@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.agungsantoso.udacity.bakingapp.data.IngredientsParcel;
 import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
-import com.agungsantoso.udacity.bakingapp.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,11 @@ public class RecipeDetailAdapter
         extends RecyclerView.Adapter<RecipeDetailAdapter.ViewHolder> {
 
     private final ArrayList<StepsParcel> mValues;
+
+    private String videoPrev;
+    private String descPrev;
+    private String videoNext;
+    private String descNext;
 
     public RecipeDetailAdapter(ArrayList<StepsParcel> items) {
         mValues = items;
@@ -57,9 +61,8 @@ public class RecipeDetailAdapter
                 } else {*/
                 Context context = v.getContext();
                 Intent intent = new Intent(context, RecipeStepDetailActivity.class);
-                intent.putExtra("thumbnail", mValues.get(position).getThumbnailURL());
-                intent.putExtra("video", mValues.get(position).getVideoURL());
-                intent.putExtra("description", mValues.get(position).getDescription());
+                intent.putExtra("id", position);
+                intent.putParcelableArrayListExtra("steps", mValues);
                 context.startActivity(intent);
                 //}
             }

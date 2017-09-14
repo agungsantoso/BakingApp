@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.agungsantoso.udacity.bakingapp.data.IngredientsParcel;
 import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
-import com.agungsantoso.udacity.bakingapp.dummy.DummyContent;
 
 import java.util.ArrayList;
 
