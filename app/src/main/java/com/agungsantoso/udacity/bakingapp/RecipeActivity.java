@@ -1,6 +1,9 @@
 package com.agungsantoso.udacity.bakingapp;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +11,7 @@ import android.util.Log;
 
 import com.agungsantoso.udacity.bakingapp.data.ApiEndpointInterface;
 import com.agungsantoso.udacity.bakingapp.data.Recipe;
+import com.agungsantoso.udacity.bakingapp.idling.SimpleIdlingResource;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -21,6 +25,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import android.support.test.espresso.IdlingResource;
 
 
 /**
@@ -41,6 +47,18 @@ public class RecipeActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private RecipeAdapter mAdapter;
     private RecyclerView rv;
+
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +100,19 @@ public class RecipeActivity extends AppCompatActivity {
                     // This is where data loads
                     mAdapter = new RecipeAdapter(result);
 
+                    if (mIdlingResource != null) {
+                        mIdlingResource.setIdleState(false);
+                    }
 
                     //attach to recyclerview
                     LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
                     rv = (RecyclerView) findViewById(R.id.recipe_item_list);
                     rv.setLayoutManager(llm);
                     rv.setAdapter(mAdapter);
+
+                    if (mIdlingResource != null) {
+                        mIdlingResource.setIdleState(true);
+                    }
 
                     if (findViewById(R.id.item_detail_container) != null) {
                         // The detail container view will be present only in the
