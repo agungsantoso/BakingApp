@@ -1,5 +1,6 @@
 package com.agungsantoso.udacity.bakingapp;
 
+import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,15 +8,22 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.agungsantoso.udacity.bakingapp.data.ApiEndpointInterface;
 import com.agungsantoso.udacity.bakingapp.data.Recipe;
 import com.agungsantoso.udacity.bakingapp.idling.SimpleIdlingResource;
 import com.google.gson.Gson;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -27,6 +35,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.support.test.espresso.IdlingResource;
+import android.widget.ListAdapter;
 
 
 /**
@@ -67,6 +76,13 @@ public class RecipeActivity extends AppCompatActivity {
 
         getIdlingResource();
 
+        new Prefs.Builder()
+                .setContext(this)
+                .setMode(ContextWrapper.MODE_PRIVATE)
+                .setPrefsName(getPackageName())
+                .setUseDefaultSharedPreference(true)
+                .build();
+
         OkHttpClient okClient = new OkHttpClient.Builder()
                 .addInterceptor(
                         new Interceptor() {
@@ -103,6 +119,14 @@ public class RecipeActivity extends AppCompatActivity {
                     // request successful (status code 200, 201)
                     List<Recipe> result = response.body();
                     Log.d("MainActivity", "response = " + new Gson().toJson(result));
+
+                    List<String> recipes = new ArrayList<>();
+                    for (int i = 0; i < result.size(); i++) {
+                        recipes.add(result.get(i).getName());
+                    }
+                    String rcps = TextUtils.join(";", recipes);
+                    Log.d("RecipeAct", "rcp = " + rcps);
+                    Prefs.putString("recipes", rcps);
 
                     // This is where data loads
                     mAdapter = new RecipeAdapter(result);

@@ -1,6 +1,7 @@
 package com.agungsantoso.udacity.bakingapp;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.agungsantoso.udacity.bakingapp.data.IngredientsParcel;
 import com.agungsantoso.udacity.bakingapp.data.Recipe;
 import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
 import com.google.gson.Gson;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;

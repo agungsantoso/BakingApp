@@ -55,9 +55,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ArrayList<IngredientsParcel> ingrParcel = data.getParcelableArrayList("ingredients");
         String ingrText = "";
         for(int i = 0; i < ingrParcel.size(); i++) {
-            ingrText += ingrParcel.get(i).getIngredients() + " " +
-                        ingrParcel.get(i).getQuantity() + " " +
-                        ingrParcel.get(i).getMeasure() + " " +
+            ingrText += ingrParcel.get(i).getQuantity() + " " +
+                        ingrParcel.get(i).getMeasure() + "   " +
+                        ingrParcel.get(i).getIngredients() +
                         "\n";
         }
 
