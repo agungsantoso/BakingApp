@@ -65,6 +65,8 @@ public class RecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
+        getIdlingResource();
+
         OkHttpClient okClient = new OkHttpClient.Builder()
                 .addInterceptor(
                         new Interceptor() {
@@ -87,7 +89,12 @@ public class RecipeActivity extends AppCompatActivity {
 
         Call<List<Recipe>> call = service.getRecipes();
 
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(false);
+        }
+
         call.enqueue(new Callback<List<Recipe>>() {
+
             @Override
             public void onResponse(Call<List<Recipe>> call, retrofit2.Response<List<Recipe>> response) {
                 Log.d("MainActivity", "Status Code = " + response.code());
