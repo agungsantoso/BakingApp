@@ -3,6 +3,8 @@ package com.agungsantoso.udacity.bakingapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.support.v4.app.Fragment;
 
 /**
  * Created by agung.santoso on 9/11/2017.
@@ -50,21 +54,29 @@ public class RecipeDetailAdapter
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (mTwoPane) {
+                if (RecipeDetailActivity.mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(RecipeStepDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                    int id = position;
+                    ArrayList<StepsParcel> steps = mValues;
+                    arguments.putParcelableArrayList("steps", steps);
+                    arguments.putString("video", steps.get(id).getVideoURL());
+                    arguments.putString("ingredient", steps.get(id).getDescription());
+                    arguments.putInt("size", steps.size());
                     RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
                     fragment.setArguments(arguments);
-                    getSupportFragmentManager().beginTransaction()
+                    Context context = v.getContext();
+                    ((FragmentActivity)context).getSupportFragmentManager()
+                            .beginTransaction()
                             .replace(R.id.item_detail_container, fragment)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .commit();
-                } else {*/
-                Context context = v.getContext();
-                Intent intent = new Intent(context, RecipeStepDetailActivity.class);
-                intent.putExtra("id", position);
-                intent.putParcelableArrayListExtra("steps", mValues);
-                context.startActivity(intent);
-                //}
+                } else {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, RecipeStepDetailActivity.class);
+                    intent.putExtra("id", position);
+                    intent.putParcelableArrayListExtra("steps", mValues);
+                    context.startActivity(intent);
+                }
             }
         });
     }

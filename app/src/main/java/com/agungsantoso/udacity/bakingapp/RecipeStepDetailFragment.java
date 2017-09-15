@@ -3,6 +3,7 @@ package com.agungsantoso.udacity.bakingapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
@@ -127,6 +128,11 @@ public class RecipeStepDetailFragment extends Fragment {
                 context.startActivity(intent);
             }
         });
+
+        if(RecipeDetailActivity.mTwoPane) {
+            previous.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        }
 
         return rootView;
     }
