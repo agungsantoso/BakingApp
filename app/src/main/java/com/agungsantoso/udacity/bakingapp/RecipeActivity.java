@@ -31,6 +31,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.support.test.espresso.IdlingResource;
+import android.widget.Toast;
 
 
 /**
@@ -155,6 +156,8 @@ public class RecipeActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 Log.d("Main Activity", "failure call = " + t.toString());
+                Toast.makeText(RecipeActivity.this, t.toString(),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }

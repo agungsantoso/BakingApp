@@ -51,6 +51,8 @@ public class StepsParcel
         return videoURL;
     }
 
+    public String getThumbnailURL() { return thumbnailURL; }
+
     public StepsParcel(
             String id,
             String shortDescription,

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -37,8 +40,10 @@ public class RecipeStepDetailFragment extends Fragment {
     private ArrayList<StepsParcel> mSteps;
     private String mIngredient;
     private String mVideo;
+    private String mThumbnail;
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
+    private Long position;
 
     public RecipeStepDetailFragment() {
     }
@@ -67,6 +72,10 @@ public class RecipeStepDetailFragment extends Fragment {
             mVideo = getArguments().getString("video");
         }
 
+        if (getArguments().containsKey("thumbnail")) {
+            mThumbnail = getArguments().getString("thumbnail");
+        }
+
         Log.d("Fragment", "ingr = " + mIngredient);
         Log.d("Fragment", "vid = " + mVideo);
     }
@@ -87,6 +96,10 @@ public class RecipeStepDetailFragment extends Fragment {
 
             // Initialize the player.
             initializePlayer(Uri.parse(mVideo));
+        }
+
+        if(mThumbnail != null) {
+            ((ImageView) rootView.findViewById(R.id.thumbnail)).setImageURI(Uri.parse(mThumbnail));
         }
 
         final Button previous = rootView.findViewById(R.id.previous);
@@ -157,10 +170,30 @@ public class RecipeStepDetailFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(mVideo != null) {
+    public void onPause() {
+        super.onPause();
+        if (mExoPlayer != null) {
+            position = mExoPlayer.getCurrentPosition();
             releasePlayer();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putLong("position", position);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        position = C.TIME_UNSET;
+        if (savedInstanceState != null) {
+            position = savedInstanceState.getLong("position", C.TIME_UNSET);
+            if (position != C.TIME_UNSET) {
+                mExoPlayer.seekTo(position);
+            }
         }
     }
 }

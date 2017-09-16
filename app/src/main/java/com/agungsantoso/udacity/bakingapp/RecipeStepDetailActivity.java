@@ -26,6 +26,7 @@ public class RecipeStepDetailActivity extends AppCompatActivity {
             ArrayList<StepsParcel> steps = getIntent().getParcelableArrayListExtra("steps");
             arguments.putParcelableArrayList("steps", steps);
             arguments.putString("video", steps.get(id).getVideoURL());
+            arguments.putString("thumbnail", steps.get(id).getThumbnailURL());
             arguments.putString("ingredient", steps.get(id).getDescription());
             arguments.putInt("size", steps.size());
             RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
