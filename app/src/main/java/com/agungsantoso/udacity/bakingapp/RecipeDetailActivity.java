@@ -30,11 +30,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
      * device.
      */
     public static boolean mTwoPane;
+    public static String recipeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
+
+        Bundle data = getIntent().getExtras();
+        recipeName = data.getString("recipe");
+        getSupportActionBar().setTitle(recipeName);
 
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;

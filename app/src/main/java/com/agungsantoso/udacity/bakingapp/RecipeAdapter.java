@@ -47,18 +47,11 @@ public class RecipeAdapter
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString(RecipeStepDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-                    RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
-                    fragment.setArguments(arguments);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.item_detail_container, fragment)
-                            .commit();
-                } else {*/
+
                 Log.d("RecipeAdapter", "data = " + holder.mItem.getIngredients().toString());
                 Context context = v.getContext();
                 Intent intent = new Intent(context, RecipeDetailActivity.class);
+                intent.putExtra("recipe", holder.mItem.getName());
                 List<Recipe.Ingredients> ingr = holder.mItem.getIngredients();
                 ArrayList<IngredientsParcel> ingrParcel = new ArrayList<>();
                 for(int i = 0; i < ingr.size(); i++) {
@@ -82,7 +75,7 @@ public class RecipeAdapter
                 }
                 intent.putParcelableArrayListExtra("steps", stpsParcel);
                 context.startActivity(intent);
-                //}
+
             }
         });
     }

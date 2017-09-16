@@ -5,7 +5,9 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
@@ -18,10 +20,13 @@ import com.agungsantoso.udacity.bakingapp.R;
 public class IngredientWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+                                int appWidgetId, String recipe, String ingredient) {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredient_widget);
-        views.setTextViewText(R.id.widget_content, "This is the text");
+
+        Log.d("widgetprov", "ingr = " + ingredient);
+
+        views.setTextViewText(R.id.widget_content, recipe + "\n" + ingredient);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -30,7 +35,10 @@ public class IngredientWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            SharedPreferences sharedPref = context.getSharedPreferences("BakingApp", Context.MODE_PRIVATE);
+            String recipe = sharedPref.getString("recipe", "");
+            String ingredient = sharedPref.getString(recipe, "");
+            updateAppWidget(context, appWidgetManager, appWidgetId, recipe, ingredient);
         }
     }
 

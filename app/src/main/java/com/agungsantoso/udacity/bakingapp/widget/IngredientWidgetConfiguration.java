@@ -2,8 +2,10 @@ package com.agungsantoso.udacity.bakingapp.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -30,20 +32,13 @@ public class IngredientWidgetConfiguration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_widget_configuration);
 
-        new Prefs.Builder()
-                .setContext(this)
-                .setMode(ContextWrapper.MODE_PRIVATE)
-                .setPrefsName(getPackageName())
-                .setUseDefaultSharedPreference(true)
-                .build();
-
         // https://stackoverflow.com/a/10566405/448050
         // Add radio button select
-        RadioGroup group = (RadioGroup) findViewById(R.id.recipe_select);
+        final RadioGroup group = (RadioGroup) findViewById(R.id.recipe_select);
         RadioButton button;
 
-        String recipes = "";
-        Prefs.getString("recipes", recipes);
+        SharedPreferences sharedPref = getSharedPreferences("BakingApp", Context.MODE_PRIVATE);
+        String recipes = sharedPref.getString("recipes", "");
         Log.d("Widget", "recipes = " + recipes);
 
         String[] rcpsArr = recipes.split(";");
@@ -59,14 +54,30 @@ public class IngredientWidgetConfiguration extends AppCompatActivity {
         final Button save = (Button) findViewById(R.id.config_save);
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Update widget
+                // Get selected text
+                // https://stackoverflow.com/a/6441097/448050
+                int radioButtonID = group.getCheckedRadioButtonId();
+                View radioButton = group.findViewById(radioButtonID);
+                int idx = group.indexOfChild(radioButton);
+                RadioButton r = (RadioButton) group.getChildAt(idx);
+                String selectedtext = r.getText().toString();
+
+                SharedPreferences sharedPref = getSharedPreferences("BakingApp", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("ingredient", selectedtext);
+                editor.commit();
+
+                // Update widgets
                 Bundle extras = getIntent().getExtras();
                 int widgetIds = extras.getInt(
                         AppWidgetManager.EXTRA_APPWIDGET_ID,
                         AppWidgetManager.INVALID_APPWIDGET_ID);
 
+                IngredientWidgetProvider.updateAppWidget(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()), widgetIds, selectedtext, sharedPref.getString(selectedtext, ""));
+
                 Intent resultValue = new Intent();
                 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetIds);
+                resultValue.putExtra("ingredient", selectedtext);
                 setResult(RESULT_OK, resultValue);
                 finish();
             }
