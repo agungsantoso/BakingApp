@@ -2,6 +2,7 @@ package com.agungsantoso.udacity.bakingapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,13 +43,19 @@ public class RecipeAdapter
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         String recipeName = holder.mItem.getName();
+        String image = holder.mItem.getImage();
 
-        // Set image dynamically
-        // https://stackoverflow.com/a/9481452/448050
-        Context context = holder.itemView.getContext();
-        String imageName = TextUtils.join("_", recipeName.split(" ")).toLowerCase();
-        int imageId = context.getResources().getIdentifier(imageName , "drawable", context.getPackageName());
-        holder.mImageView.setImageResource(imageId);
+        if(image == "") {
+            // Set image dynamically
+            // https://stackoverflow.com/a/9481452/448050
+            Context context = holder.itemView.getContext();
+            String imageName = TextUtils.join("_", recipeName.split(" ")).toLowerCase();
+            int imageId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
+            holder.mImageView.setImageResource(imageId);
+        } else {
+            holder.mImageView.setImageURI(Uri.parse(image));
+        }
+
         holder.mContentView.setText(recipeName);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

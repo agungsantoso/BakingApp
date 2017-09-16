@@ -39,6 +39,8 @@ public class Recipe {
         return steps;
     }
 
+    public String getImage() { return image; }
+
     public static class Ingredients {
         private double quantity;
         private String measure;
