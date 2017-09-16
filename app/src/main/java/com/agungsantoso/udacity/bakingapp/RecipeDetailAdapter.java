@@ -6,19 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.agungsantoso.udacity.bakingapp.data.IngredientsParcel;
 import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import android.support.v4.app.Fragment;
 
 /**
  * Created by agung.santoso on 9/11/2017.
@@ -28,11 +23,6 @@ public class RecipeDetailAdapter
         extends RecyclerView.Adapter<RecipeDetailAdapter.ViewHolder> {
 
     private final ArrayList<StepsParcel> mValues;
-
-    private String videoPrev;
-    private String descPrev;
-    private String videoNext;
-    private String descNext;
 
     public RecipeDetailAdapter(ArrayList<StepsParcel> items) {
         mValues = items;
@@ -95,8 +85,8 @@ public class RecipeDetailAdapter
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = view.findViewById(R.id.id);
+            mContentView = view.findViewById(R.id.content);
         }
 
         @Override

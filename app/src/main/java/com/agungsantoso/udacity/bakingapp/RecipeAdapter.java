@@ -1,20 +1,19 @@
 package com.agungsantoso.udacity.bakingapp;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agungsantoso.udacity.bakingapp.data.IngredientsParcel;
 import com.agungsantoso.udacity.bakingapp.data.Recipe;
 import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
-import com.google.gson.Gson;
-import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,15 @@ public class RecipeAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).getName());
+        String recipeName = holder.mItem.getName();
+
+        // Set image dynamically
+        // https://stackoverflow.com/a/9481452/448050
+        Context context = holder.itemView.getContext();
+        String imageName = TextUtils.join("_", recipeName.split(" ")).toLowerCase();
+        int imageId = context.getResources().getIdentifier(imageName , "drawable", context.getPackageName());
+        holder.mImageView.setImageResource(imageId);
+        holder.mContentView.setText(recipeName);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,15 +94,15 @@ public class RecipeAdapter
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+        public final ImageView mImageView;
         public final TextView mContentView;
         public Recipe mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mImageView = view.findViewById(R.id.recipe_image);
+            mContentView = view.findViewById(R.id.content);
         }
 
         @Override

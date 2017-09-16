@@ -1,13 +1,11 @@
 package com.agungsantoso.udacity.bakingapp;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,16 +16,10 @@ import com.agungsantoso.udacity.bakingapp.data.ApiEndpointInterface;
 import com.agungsantoso.udacity.bakingapp.data.Recipe;
 import com.agungsantoso.udacity.bakingapp.idling.SimpleIdlingResource;
 import com.google.gson.Gson;
-import com.pixplicity.easyprefs.library.Prefs;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -39,7 +31,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.support.test.espresso.IdlingResource;
-import android.widget.ListAdapter;
 
 
 /**
@@ -156,10 +147,6 @@ public class RecipeActivity extends AppCompatActivity {
                     }
 
                     if (findViewById(R.id.item_detail_container) != null) {
-                        // The detail container view will be present only in the
-                        // large-screen layouts (res/values-w900dp).
-                        // If this view is present, then the
-                        // activity should be in two-pane mode.
                         mTwoPane = true;
                     }
                 }
