@@ -118,9 +118,9 @@ public class RecipeActivity extends AppCompatActivity {
                         String txt = "";
                         List<Recipe.Ingredients> ingrs = result.get(i).getIngredients();
                         for (int j = 0; j < ingrs.size(); j++) {
-                            txt += ingrs.get(j).getQuantity() + " " +
+                            txt += "* " + ingrs.get(j).getQuantity() + " " +
                                     ingrs.get(j).getMeasure() + "   " +
-                                    ingrs.get(j).getIngredient() + "\n";
+                                    ingrs.get(j).getIngredient() + "<br/>";
                         }
                         editor.putString(result.get(i).getName(), txt);
                     }
@@ -139,7 +139,7 @@ public class RecipeActivity extends AppCompatActivity {
 
                     //attach to recyclerview
                     LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
-                    rv = (RecyclerView) findViewById(R.id.recipe_item_list);
+                    rv = findViewById(R.id.recipe_item_list);
                     rv.setLayoutManager(llm);
                     rv.setAdapter(mAdapter);
 

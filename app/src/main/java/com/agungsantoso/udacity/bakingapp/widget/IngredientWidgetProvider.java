@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -26,7 +27,10 @@ public class IngredientWidgetProvider extends AppWidgetProvider {
 
         Log.d("widgetprov", "ingr = " + ingredient);
 
-        views.setTextViewText(R.id.widget_content, recipe + "\n" + ingredient);
+        String rcpCnt = "<b>" + recipe + "</b><br/>" + ingredient;
+        // Make specific text bold
+        // https://stackoverflow.com/a/14371107/448050
+        views.setTextViewText(R.id.widget_content, Html.fromHtml(rcpCnt));
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

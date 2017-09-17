@@ -19,6 +19,8 @@ import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.Glide;
+
 /**
  * Created by agung.santoso on 9/11/2017.
  */
@@ -45,7 +47,7 @@ public class RecipeAdapter
         String recipeName = holder.mItem.getName();
         String image = holder.mItem.getImage();
 
-        if(image == "") {
+        if(TextUtils.isEmpty(image)) {
             // Set image dynamically
             // https://stackoverflow.com/a/9481452/448050
             Context context = holder.itemView.getContext();
@@ -53,7 +55,11 @@ public class RecipeAdapter
             int imageId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
             holder.mImageView.setImageResource(imageId);
         } else {
-            holder.mImageView.setImageURI(Uri.parse(image));
+            // Get context in recyclerview adapter
+            // https://stackoverflow.com/a/32137097/448050
+            Glide.with(holder.mImageView.getContext())
+                    .load(Uri.parse(image))
+                    .into(holder.mImageView);
         }
 
         holder.mContentView.setText(recipeName);

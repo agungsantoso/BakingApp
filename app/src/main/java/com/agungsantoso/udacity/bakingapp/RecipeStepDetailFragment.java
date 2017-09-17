@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.agungsantoso.udacity.bakingapp.data.StepsParcel;
+import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -99,7 +100,10 @@ public class RecipeStepDetailFragment extends Fragment {
         }
 
         if(mThumbnail != null) {
-            ((ImageView) rootView.findViewById(R.id.thumbnail)).setImageURI(Uri.parse(mThumbnail));
+            ImageView thumbImg = rootView.findViewById(R.id.thumbnail);
+            Glide.with(getActivity())
+                    .load(Uri.parse(mThumbnail))
+                    .into(thumbImg);
         }
 
         final Button previous = rootView.findViewById(R.id.previous);
